@@ -45,12 +45,9 @@ export const Welcome: FC = () => {
             letterSpacing: "-0.015em",
           }}
         >
-          My camera is not used to take photos — it is a tool to{" "}
-          <Box
-            component="em"
-            sx={{ fontStyle: "italic", color: theme.palette.text.disabled }}
-          >
-            create fine art.
+          My camera is not used to take photos — it is a tool to create{" "}
+          <Box component="em" sx={{ fontStyle: "italic", fontWeight: 500 }}>
+            fine art.
           </Box>
         </Typography>
       </Stack>
@@ -78,9 +75,9 @@ export const Welcome: FC = () => {
         </Typography>
 
         <Stack
-          direction="row"
+          direction={{ xs: "column", md: "row" }}
           sx={{
-            justifyContent: "flex-start",
+            justifyContent: { xs: "center", md: "flex-start" },
             alignItems: "center",
             alignSelf: "stretch",
             gap: 7,
@@ -97,7 +94,7 @@ export const Welcome: FC = () => {
               direction="column"
               sx={{
                 justifyContent: "center",
-                alignItems: "flex-start",
+                alignItems: { xs: "center", md: "flex-start" },
                 gap: 0.5,
               }}
             >

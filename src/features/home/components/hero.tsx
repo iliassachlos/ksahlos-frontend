@@ -11,6 +11,7 @@ export const Hero: FC = () => {
         justifyContent: "center",
         alignItems: "center",
         alignSelf: "stretch",
+        mb: 16,
         gap: { xs: 6, md: 8 },
       }}
     >

@@ -14,12 +14,14 @@ import {
 } from "@mui/material";
 import React from "react";
 import EastIcon from "@mui/icons-material/East";
+import { useNavigate } from "react-router-dom";
 
 export const Collections = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const renderCollectionCard = (collection: CollectionCategory) => (
-    <Grid size={{ xs: 6, md: 4 }}>
+    <Grid size={{ xs: 12, md: 6, lg: 4 }}>
       <Card
         key={collection.title}
         sx={{
@@ -61,6 +63,7 @@ export const Collections = () => {
         >
           <Typography variant="h5">{collection.title}</Typography>
           <IconButton
+            onClick={() => navigate(`/collections/${collection.slug}`)}
             sx={{
               border: "1px solid white",
               "&:hover": {
@@ -93,8 +96,6 @@ export const Collections = () => {
       >
         Print Collections
       </Typography>
-
-      <Typography variant="h2">Where the work finds a wall</Typography>
 
       <Grid container spacing={3.5} sx={{ width: "100%" }}>
         {collectionCategories.map((category, index) => (

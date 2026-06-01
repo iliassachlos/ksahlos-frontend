@@ -4,6 +4,9 @@ import { Hero } from "../components/hero";
 import { Welcome } from "../components/welcome";
 import { SectionWrapper } from "@/components/section-wrapper/section-wrapper";
 import { Collections } from "../components/collections";
+import { Journey } from "../components/journey";
+import { Awards } from "../components/awards";
+import { Contact } from "../components/contact";
 
 type HomeSection = {
   component: FC;
@@ -23,6 +26,18 @@ const homeSectionMap: Record<string, HomeSection> = {
     component: Collections,
     tinted: false,
   },
+  journey: {
+    component: Journey,
+    tinted: true,
+  },
+  awards: {
+    component: Awards,
+    tinted: false,
+  },
+  contact: {
+    component: Contact,
+    tinted: true,
+  }
 } as const;
 
 export const HomeView: FC = () => {
@@ -33,8 +48,7 @@ export const HomeView: FC = () => {
         justifyContent: "center",
         alignItems: "flex-start",
         alignSelf: "stretch",
-        mt: 9,
-        gap: 10,
+        mt: 8,
       }}
     >
       {Object.values(homeSectionMap).map((section, index) => {
