@@ -2,6 +2,7 @@ import { Layout } from "@/components/layout/layout";
 import { paths } from "./paths";
 import { lazy, Suspense } from "react";
 import { Outlet } from "react-router-dom";
+import { LayoutLoading } from "@/components/layout/layout-loading";
 
 export const NotFoundPage = lazy(() => import("@/pages/404/"));
 
@@ -10,7 +11,7 @@ export const errorRoutes = [
     path: paths.home,
     element: (
       <Layout>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<LayoutLoading />}>
           <Outlet />
         </Suspense>
       </Layout>
