@@ -1,8 +1,10 @@
 import { combineReducers } from "@reduxjs/toolkit";
+
+import { awardsApi } from "./apis/awards-api";
 import uiReducer from "./slices/ui-slice";
 
 export const apiReducers = {
-  // [photosApi.reducerPath]: photosApi.reducer,
+  [awardsApi.reducerPath]: awardsApi.reducer,
 };
 
 export const sliceReducers = {
