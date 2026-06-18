@@ -1,4 +1,4 @@
-import { NotFoundView } from "@/features/404/views";
+import { NotFoundView } from "@/features/404/view";
 import type { FC } from "react";
 import { Helmet } from "react-helmet-async";
 
