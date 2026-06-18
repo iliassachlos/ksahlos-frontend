@@ -1,3 +1,4 @@
+import { PhotosView } from "@/features/photos/view";
 import type { FC } from "react";
 import { Helmet } from "react-helmet-async";
 
@@ -9,7 +10,7 @@ const PhotosPage: FC = () => {
         <meta name="description" content="Ksahlos Photography - Photos" />
       </Helmet>
 
-      <div>Photos</div>
+      <PhotosView />
     </>
   );
 };

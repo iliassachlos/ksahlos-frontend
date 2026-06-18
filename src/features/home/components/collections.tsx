@@ -21,9 +21,10 @@ export const Collections = () => {
   const navigate = useNavigate();
 
   const renderCollectionCard = (collection: CollectionCategory) => (
-    <Grid size={{ xs: 12, md: 6, lg: 4 }}>
+    <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
       <Card
         key={collection.title}
+        onClick={() => navigate(`/photos?category=${collection.slug}`)}
         sx={{
           position: "relative",
           aspectRatio: "3/4",
