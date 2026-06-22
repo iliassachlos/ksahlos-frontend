@@ -18,4 +18,13 @@ export const components: ThemeOptions["components"] = {
       },
     },
   },
+  MuiFormHelperText: {
+    styleOverrides: {
+      root: {
+        textTransform: "none",
+        letterSpacing: "normal",
+        fontSize: "13px",
+      },
+    },
+  },
 };

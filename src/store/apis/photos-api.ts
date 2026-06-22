@@ -1,7 +1,7 @@
 import type { Photo } from "@/types/photos";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-interface PhotosResponse {
+type PhotosResponse = {
   data: Photo[];
 }
 

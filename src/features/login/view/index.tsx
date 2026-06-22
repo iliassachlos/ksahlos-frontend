@@ -1,29 +1,62 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Alert, Button, Stack, Typography } from "@mui/material";
+import { type FC } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+
 import {
-  Button,
-  InputLabel,
-  OutlinedInput,
-  Stack,
-  Typography,
-} from "@mui/material";
-import { useState, type FC } from "react";
+  loginDefaultValues,
+  loginSchema,
+  type LoginSchema,
+} from "@/features/login/schemas/login-schema";
+import { RHFTextField } from "@/components/ui/rhf-inputs/rhf-text-field";
+import { paths } from "@/routes/paths";
+import { useLoginMutation } from "@/store/apis/auth-api";
 
 export const LoginView: FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [login, { isLoading }] = useLoginMutation();
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
+  const navigate = useNavigate();
+
+  const {
+    control,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: loginDefaultValues,
+  });
+
+  const onSubmit = async (formData: LoginSchema) => {
+    const { data, error } = await login(formData);
+
+    console.log("Login response:", data, error);
+
+    if (error) {
+      const message =
+        "data" in error
+          ? ((error.data as { error?: string }).error ?? "Something went wrong")
+          : "Something went wrong";
+      setError("root", { message });
+      return;
+    }
+
+    if (data) {
+      localStorage.setItem("token", data.token);
+      navigate(paths.dashboard);
+    }
   };
 
   return (
     <Stack
       component="form"
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       direction="column"
       sx={{
         justifyContent: "center",
         alignItems: "flex-start",
-        width: "100%",
+        alignSelf: "stretch",
         maxWidth: 440,
         gap: 2,
       }}
@@ -46,33 +79,34 @@ export const LoginView: FC = () => {
         </Typography>
       </Stack>
 
-      <Stack direction="column" sx={{ gap: 0.75, width: "100%" }}>
-        <InputLabel htmlFor="email">Email</InputLabel>
-        <OutlinedInput
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@example.com"
-          fullWidth
-          required
-        />
-      </Stack>
+      {errors.root && (
+        <Alert severity="error" sx={{ width: "100%" }}>
+          {errors.root.message}
+        </Alert>
+      )}
 
-      <Stack direction="column" sx={{ gap: 0.75, width: "100%" }}>
-        <InputLabel htmlFor="password">Password</InputLabel>
-        <OutlinedInput
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="••••••••"
-          fullWidth
-          required
-        />
-      </Stack>
+      <RHFTextField
+        name="username"
+        control={control}
+        label="Username"
+        fullWidth
+      />
 
-      <Button type="submit" variant="contained" size="large" fullWidth>
+      <RHFTextField
+        name="password"
+        control={control}
+        label="Password"
+        type="password"
+        fullWidth
+      />
+
+      <Button
+        type="submit"
+        variant="contained"
+        size="large"
+        fullWidth
+        loading={isLoading}
+      >
         Sign in
       </Button>
     </Stack>

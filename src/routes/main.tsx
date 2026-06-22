@@ -7,6 +7,7 @@ import LoginPage from "@/pages/login";
 
 export const Homepage = lazy(() => import("@/pages/home/"));
 export const PhotosPage = lazy(() => import("@/pages/photos/"));
+export const DashboardPage = lazy(() => import("@/pages/dashboard/"));
 
 export const mainRoutes = [
   {
@@ -30,6 +31,10 @@ export const mainRoutes = [
       {
         path: paths.login,
         element: <LoginPage />,
+      },
+      {
+        path: paths.dashboard,
+        element: <DashboardPage />,
       },
     ],
   },

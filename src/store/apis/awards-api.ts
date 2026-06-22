@@ -1,9 +1,9 @@
 import type { Award } from "@/types/awards";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-interface AwardsResponse {
+type AwardsResponse = {
   data: Award[];
-}
+};
 
 export const awardsApi = createApi({
   reducerPath: "awardsApi",
