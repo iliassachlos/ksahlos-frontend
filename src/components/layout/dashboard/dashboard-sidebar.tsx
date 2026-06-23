@@ -24,7 +24,7 @@ import { useGetAwardsQuery } from "@/store/apis/awards-api";
 import { useGetPhotosQuery } from "@/store/apis/photos-api";
 
 export const DashboardSidebar: FC = () => {
-  const { data: photos } = useGetPhotosQuery(null);
+  const { data: photos } = useGetPhotosQuery();
   const { data: awards } = useGetAwardsQuery();
 
   const theme = useTheme();

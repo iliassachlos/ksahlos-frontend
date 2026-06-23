@@ -5,6 +5,8 @@ import { Layout } from "@/components/layout/main/layout";
 import { LayoutLoading } from "@/components/layout/layout-loading";
 import LoginPage from "@/pages/login";
 
+import { GuestRoute } from "./guest-route";
+
 export const Homepage = lazy(() => import("@/pages/home/"));
 export const PhotosPage = lazy(() => import("@/pages/photos/"));
 
@@ -29,7 +31,11 @@ export const mainRoutes = [
       },
       {
         path: paths.login,
-        element: <LoginPage />,
+        element: (
+          <GuestRoute>
+            <LoginPage />
+          </GuestRoute>
+        ),
       },
     ],
   },

@@ -8,6 +8,7 @@ const DashboardPhotosPage: FC = () => (
     <Helmet>
       <title>Ksahlos Photography - Dashboard - Photos</title>
     </Helmet>
+    
     <DashboardPhotosView />
   </>
 );

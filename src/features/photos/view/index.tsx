@@ -25,7 +25,9 @@ export const PhotosView: FC = () => {
   const [searchParams] = useSearchParams();
   const category = searchParams.get("category");
 
-  const { data: photos, isLoading } = useGetPhotosQuery(category);
+  const { data: photos, isLoading } = useGetPhotosQuery(
+    category ? { category } : undefined,
+  );
 
   const theme = useTheme();
   const navigate = useNavigate();
