@@ -31,8 +31,6 @@ export const LoginView: FC = () => {
   const onSubmit = async (formData: LoginSchema) => {
     const { data, error } = await login(formData);
 
-    console.log("Login response:", data, error);
-
     if (error) {
       const message =
         "data" in error
@@ -43,7 +41,7 @@ export const LoginView: FC = () => {
     }
 
     if (data) {
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data);
       navigate(paths.dashboard);
     }
   };

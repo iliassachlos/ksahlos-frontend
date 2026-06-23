@@ -4,6 +4,7 @@ import { Typography, useScrollTrigger } from "@mui/material";
 import { alpha, Stack, useTheme } from "@mui/system";
 import type { FC } from "react";
 import { useNavigate } from "react-router-dom";
+
 export const Header: FC = () => {
   const theme = useTheme();
   const navigate = useNavigate();

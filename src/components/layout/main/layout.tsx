@@ -12,7 +12,6 @@ export const Layout: FC<{ children: ReactNode }> = ({ children }) => {
         justifyContent: "center",
         alignItems: "flex-start",
         alignSelf: "stretch",
-        // bgcolor
       }}
     >
       <Header />

@@ -1,4 +1,4 @@
-import { Layout } from "@/components/layout/layout";
+import { Layout } from "@/components/layout/main/layout";
 import { paths } from "./paths";
 import { lazy, Suspense } from "react";
 import { Outlet } from "react-router-dom";
