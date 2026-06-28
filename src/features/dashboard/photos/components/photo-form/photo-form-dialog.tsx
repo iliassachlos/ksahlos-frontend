@@ -57,10 +57,9 @@ export const PhotoFormDialog: FC<PhotoFormDialogProps> = (props) => {
 
     if (data.image) formData.append("image", data.image);
 
-    formData.append("title", data.title);
-    formData.append("category", data.category);
-
-    if (data.description) formData.append("description", data.description);
+    formData.append("title", data.title ?? "");
+    formData.append("description", data.description ?? "");
+    formData.append("category", data.category.toLowerCase() ?? "");
 
     if (photo) {
       await updatePhoto({ id: photo._id, body: formData });

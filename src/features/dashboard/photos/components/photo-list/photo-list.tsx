@@ -2,28 +2,53 @@ import SearchIcon from "@mui/icons-material/Search";
 import {
   Button,
   Divider,
+  IconButton,
   InputAdornment,
   MenuItem,
   Select,
   type SelectChangeEvent,
   Stack,
   TextField,
+  Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
 import {
   Fragment,
+  useEffect,
   useState,
   type ChangeEvent,
   type FC,
   type KeyboardEvent,
 } from "react";
 import ArrangeIcon from "@mui/icons-material/ClearAll";
+import {
+  closestCenter,
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
-import { useGetPhotosQuery, type PhotoFilters } from "@/store/apis/photos-api";
+import {
+  useGetPhotosQuery,
+  useRearrangePhotosMutation,
+  type PhotoFilters,
+} from "@/store/apis/photos-api";
 import { capitalizeFirstLetter } from "@/utils/utils";
+import type { Photo } from "@/types/photos";
 
 import { PhotoRow } from "./photo-row";
+import { SortablePhotoRow } from "./sortable-photo-row";
+import InfoIcon from "@mui/icons-material/Info";
 
 const defaultFilters: PhotoFilters = {
   title: "",
@@ -37,8 +62,55 @@ export const PhotoList: FC = () => {
 
   const { data: allPhotos } = useGetPhotosQuery();
   const { data: photos } = useGetPhotosQuery(appliedFilters);
+  const [rearrangePhotos, { isLoading: isSaving }] =
+    useRearrangePhotosMutation();
+
+  const [isArranging, setIsArranging] = useState(false);
+  const [orderedPhotos, setOrderedPhotos] = useState<Photo[]>([]);
+
+  // Keep the draft order in sync with fetched photos while arranging
+  useEffect(() => {
+    if (isArranging) setOrderedPhotos(photos ?? []);
+  }, [isArranging, photos]);
 
   const theme = useTheme();
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    setOrderedPhotos((items) => {
+      const oldIndex = items.findIndex((photo) => photo._id === active.id);
+      const newIndex = items.findIndex((photo) => photo._id === over.id);
+
+      return arrayMove(items, oldIndex, newIndex);
+    });
+  };
+
+  const handleToggleArrange = async () => {
+    if (!isArranging) {
+      setIsArranging(true);
+      return;
+    }
+
+    const orderedIds = orderedPhotos.map((photo) => photo._id);
+    const originalIds = (photos ?? []).map((photo) => photo._id);
+    const orderChanged = orderedIds.some((id, i) => id !== originalIds[i]);
+
+    if (orderChanged) await rearrangePhotos(orderedIds);
+    setIsArranging(false);
+  };
+
+  const hasActiveFilters = Boolean(
+    appliedFilters.title || appliedFilters.category,
+  );
 
   const categories = [
     ...new Set((allPhotos ?? []).map((photo) => photo.category)),
@@ -121,13 +193,40 @@ export const PhotoList: FC = () => {
           </Select>
         </Stack>
 
-        <Button
-          variant="outlined"
-          startIcon={<ArrangeIcon />}
-          sx={{ height: 41 }}
+        <Stack
+          direction="row"
+          sx={{
+            justifyContent: "flex-start",
+            alignItems: "center",
+            alignSelf: "stretch",
+            gap: 2,
+          }}
         >
-          Arrange
-        </Button>
+          {hasActiveFilters && (
+            <Tooltip
+              title={
+                hasActiveFilters
+                  ? "Cannot arrange photos while filters are active"
+                  : ""
+              }
+              placement="left"
+              arrow
+            >
+              <InfoIcon color="info" />
+            </Tooltip>
+          )}
+
+          <Button
+            variant={isArranging ? "contained" : "outlined"}
+            startIcon={<ArrangeIcon />}
+            onClick={handleToggleArrange}
+            loading={isSaving}
+            disabled={hasActiveFilters}
+            sx={{ height: 41 }}
+          >
+            {isArranging ? "Done" : "Arrange"}
+          </Button>
+        </Stack>
       </Stack>
 
       <Stack
@@ -140,7 +239,25 @@ export const PhotoList: FC = () => {
           borderRadius: 2,
         }}
       >
-        {photos?.length ? (
+        {isArranging ? (
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={orderedPhotos.map((p) => p._id)}
+              strategy={verticalListSortingStrategy}
+            >
+              {orderedPhotos.map((photo, index) => (
+                <Fragment key={photo._id}>
+                  {index > 0 && <Divider />}
+                  <SortablePhotoRow photo={photo} index={index} />
+                </Fragment>
+              ))}
+            </SortableContext>
+          </DndContext>
+        ) : photos?.length ? (
           photos.map((photo, index) => (
             <Fragment key={photo._id}>
               {index > 0 && <Divider />}

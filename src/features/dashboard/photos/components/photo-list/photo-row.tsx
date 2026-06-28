@@ -4,15 +4,17 @@ import type { FC } from "react";
 import type { Photo } from "@/types/photos";
 import { capitalizeFirstLetter } from "@/utils/utils";
 import CircleIcon from "@mui/icons-material/Circle";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { EditPhoto } from "../photo-form/edit-photo";
 import { DeletePhoto } from "../delete-photo/delete-photo";
 
 type PhotoRowProps = {
   photo: Photo;
   index: number;
+  isArranging?: boolean;
 };
 
-export const PhotoRow: FC<PhotoRowProps> = ({ photo, index }) => {
+export const PhotoRow: FC<PhotoRowProps> = ({ photo, index, isArranging }) => {
   const theme = useTheme();
 
   return (
@@ -83,10 +85,17 @@ export const PhotoRow: FC<PhotoRowProps> = ({ photo, index }) => {
           }}
         />
 
-        <Stack direction="row" sx={{ gap: 1 }}>
-          <EditPhoto photo={photo} />
-          <DeletePhoto photoId={photo._id} />
-        </Stack>
+        {isArranging ? (
+          <DragIndicatorIcon
+            fontSize="small"
+            sx={{ color: theme.palette.text.disabled }}
+          />
+        ) : (
+          <Stack direction="row" sx={{ gap: 1 }}>
+            <EditPhoto photo={photo} />
+            <DeletePhoto photoId={photo._id} />
+          </Stack>
+        )}
       </Stack>
     </Stack>
   );

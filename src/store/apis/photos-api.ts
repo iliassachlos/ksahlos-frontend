@@ -53,6 +53,14 @@ export const photosApi = createApi({
       }),
       invalidatesTags: ["Photos"],
     }),
+    rearrangePhotos: builder.mutation<void, string[]>({
+      query: (orderedIds) => ({
+        url: "/photos/rearrange",
+        method: "PATCH",
+        body: { orderedIds },
+      }),
+      invalidatesTags: ["Photos"],
+    }),
   }),
 });
 
@@ -61,4 +69,5 @@ export const {
   useAddPhotoMutation,
   useUpdatePhotoMutation,
   useDeletePhotoMutation,
+  useRearrangePhotosMutation,
 } = photosApi;
