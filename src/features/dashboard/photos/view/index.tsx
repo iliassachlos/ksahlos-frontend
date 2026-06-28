@@ -1,6 +1,6 @@
 import { Divider, Stack, Typography } from "@mui/material";
 import type { FC } from "react";
-import { AddPhoto } from "../components/add-photo/add-photo";
+import { AddPhoto } from "../components/photo-form/add-photo";
 import { PhotoList } from "../components/photo-list/photo-list";
 
 export const DashboardPhotosView: FC = () => {

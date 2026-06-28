@@ -1,5 +1,7 @@
 import type { Photo } from "@/types/photos";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+
+import { baseQuery } from "@/store/base-query";
 
 type PhotosResponse = {
   data: Photo[];
@@ -12,7 +14,8 @@ export type PhotoFilters = {
 
 export const photosApi = createApi({
   reducerPath: "photosApi",
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API_URL }),
+  baseQuery,
+  tagTypes: ["Photos"],
   endpoints: (builder) => ({
     getPhotos: builder.query<Photo[], PhotoFilters | void>({
       query: (filters) => {
@@ -23,8 +26,39 @@ export const photosApi = createApi({
         return { url: "/photos", params };
       },
       transformResponse: (response: PhotosResponse) => response.data,
+      providesTags: ["Photos"],
+    }),
+    addPhoto: builder.mutation<Photo, FormData>({
+      query: (body) => ({
+        url: "/photos/create",
+        method: "POST",
+        body,
+      }),
+      transformResponse: (response: { data: Photo }) => response.data,
+      invalidatesTags: ["Photos"],
+    }),
+    updatePhoto: builder.mutation<Photo, { id: string; body: FormData }>({
+      query: ({ id, body }) => ({
+        url: `/photos/${id}`,
+        method: "PATCH",
+        body,
+      }),
+      transformResponse: (response: { data: Photo }) => response.data,
+      invalidatesTags: ["Photos"],
+    }),
+    deletePhoto: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `/photos/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Photos"],
     }),
   }),
 });
 
-export const { useGetPhotosQuery } = photosApi;
+export const {
+  useGetPhotosQuery,
+  useAddPhotoMutation,
+  useUpdatePhotoMutation,
+  useDeletePhotoMutation,
+} = photosApi;

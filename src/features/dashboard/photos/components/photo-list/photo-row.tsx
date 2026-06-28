@@ -1,43 +1,31 @@
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import {
-  Box,
-  Chip,
-  IconButton,
-  Stack,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, Chip, Stack, Typography, useTheme } from "@mui/material";
 import type { FC } from "react";
 
 import type { Photo } from "@/types/photos";
 import { capitalizeFirstLetter } from "@/utils/utils";
 import CircleIcon from "@mui/icons-material/Circle";
+import { EditPhoto } from "../photo-form/edit-photo";
+import { DeletePhoto } from "../delete-photo/delete-photo";
 
 type PhotoRowProps = {
   photo: Photo;
   index: number;
-  onEdit?: (photo: Photo) => void;
-  onDelete?: (photo: Photo) => void;
 };
 
-export const PhotoRow: FC<PhotoRowProps> = ({
-  photo,
-  index,
-  onEdit,
-  onDelete,
-}) => {
+export const PhotoRow: FC<PhotoRowProps> = ({ photo, index }) => {
   const theme = useTheme();
 
   return (
     <Stack
       direction="row"
       sx={{
+        justifyContent: "flex-start",
         alignItems: "center",
         alignSelf: "stretch",
         px: 3,
         py: 2,
         gap: 2.5,
+        borderBottom: `1px solid ${theme.palette.divider}`,
       }}
     >
       <Typography variant="body2" color="textDisabled" sx={{ width: 24 }}>
@@ -77,10 +65,11 @@ export const PhotoRow: FC<PhotoRowProps> = ({
       <Stack
         direction="row"
         sx={{
-          justfyContent: "flex-start",
+          justifyContent: "space-between",
           alignItems: "center",
           alignSelf: "stretch",
           gap: 6,
+          minWidth: 240,
         }}
       >
         <Chip
@@ -95,12 +84,8 @@ export const PhotoRow: FC<PhotoRowProps> = ({
         />
 
         <Stack direction="row" sx={{ gap: 1 }}>
-          <IconButton size="small" onClick={() => onEdit?.(photo)}>
-            <EditOutlinedIcon fontSize="small" />
-          </IconButton>
-          <IconButton size="small" onClick={() => onDelete?.(photo)}>
-            <DeleteOutlineOutlinedIcon fontSize="small" />
-          </IconButton>
+          <EditPhoto photo={photo} />
+          <DeletePhoto photoId={photo._id} />
         </Stack>
       </Stack>
     </Stack>

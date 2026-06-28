@@ -1,6 +1,5 @@
 import SearchIcon from "@mui/icons-material/Search";
 import {
-  Box,
   Button,
   Divider,
   InputAdornment,
@@ -51,17 +50,17 @@ export const PhotoList: FC = () => {
     setFilters((prevFilters) => ({ ...prevFilters, title: e.target.value }));
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      setAppliedFilters((prev) => ({ ...prev, title: filters.title }));
-    }
-  };
-
   const handleCategoryChange = (e: SelectChangeEvent) => {
     const category = e.target.value;
 
     setFilters((prevFilters) => ({ ...prevFilters, category }));
     setAppliedFilters((prev) => ({ ...prev, category }));
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      setAppliedFilters((prev) => ({ ...prev, title: filters.title }));
+    }
   };
 
   return (

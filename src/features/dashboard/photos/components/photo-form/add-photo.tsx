@@ -1,33 +1,25 @@
 import { Button } from "@mui/material";
 import { useState, type FC } from "react";
-import { AddPhotoDialog } from "./add-photo-dialog";
+import { PhotoFormDialog } from "./photo-form-dialog";
 import AddIcon from "@mui/icons-material/Add";
 
 export const AddPhoto: FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  const handleOpenDialog = () => {
-    setIsDialogOpen(true);
-  };
-
-  const handleCloseDialog = () => {
-    setIsDialogOpen(false);
-  };
 
   return (
     <>
       <Button
         variant="contained"
         startIcon={<AddIcon />}
-        onClick={handleOpenDialog}
+        onClick={() => setIsDialogOpen(true)}
       >
         Add Photo
       </Button>
 
       {isDialogOpen && (
-        <AddPhotoDialog
+        <PhotoFormDialog
           isOpen={isDialogOpen}
-          handleCloseDialog={handleCloseDialog}
+          onClose={() => setIsDialogOpen(false)}
         />
       )}
     </>

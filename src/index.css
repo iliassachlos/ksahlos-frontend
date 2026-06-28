@@ -4,3 +4,15 @@
   background: #16171a;
   color: #fcfcfd;
 }
+
+:root {
+  --toastify-toast-bd-radius: 4px;
+  --toastify-toast-min-height: 48px;
+  --toastify-toast-shadow: 0 1px 3px rgba(22, 23, 26, 0.12);
+  --toastify-font-family: "Inter", sans-serif;
+}
+
+.Toastify__toast {
+  border: 1px solid #e5e6ea;
+  font-size: 14px;
+}

@@ -40,8 +40,7 @@ export const PhotosView: FC = () => {
           justifyContent: "center",
           alignItems: "flex-start",
           alignSelf: "stretch",
-          mt: 8,
-          gap: 3,
+          gap: 2,
         }}
       >
         <Stack
@@ -57,8 +56,8 @@ export const PhotosView: FC = () => {
             onClick={() => navigate("/")}
             aria-label="Back to home"
             sx={{
-              width: 44,
-              height: 44,
+              width: 34,
+              height: 34,
               border: `1px solid ${theme.palette.divider}`,
               borderRadius: "50%",
               transition: "background 0.3s, color 0.3s, border-color 0.3s",
@@ -71,23 +70,9 @@ export const PhotosView: FC = () => {
           >
             <WestIcon fontSize="small" />
           </IconButton>
-        </Stack>
 
-        <Stack
-          direction="column"
-          sx={{
-            justifyContent: "center",
-            alignItems: "flex-start",
-            alignSelf: "stretch",
-            gap: 1,
-          }}
-        >
-          <Typography variant="h2">
+           <Typography variant="h3">
             {capitalizeFirstLetter(category || "")}
-          </Typography>
-
-          <Typography variant="body1" color="textSecondary">
-            {photos?.length || 0} {photos?.length === 1 ? "work" : "works"}
           </Typography>
         </Stack>
 
