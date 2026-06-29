@@ -1,6 +1,7 @@
 import LogoutIcon from "@mui/icons-material/Logout";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined";
+import CollectionsOutlinedIcon from "@mui/icons-material/CollectionsOutlined";
 import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
 import {
   Avatar,
@@ -21,10 +22,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { SIDEBAR_WIDTH } from "@/data/globals";
 import { paths } from "@/routes/paths";
 import { useGetAwardsQuery } from "@/store/apis/awards-api";
+import { useGetCollectionsQuery } from "@/store/apis/collections-api";
 import { useGetPhotosQuery } from "@/store/apis/photos-api";
 
 export const DashboardSidebar: FC = () => {
   const { data: photos } = useGetPhotosQuery();
+  const { data: collections } = useGetCollectionsQuery();
   const { data: awards } = useGetAwardsQuery();
 
   const theme = useTheme();
@@ -37,6 +40,12 @@ export const DashboardSidebar: FC = () => {
       label: "Photos",
       icon: <InsertPhotoOutlinedIcon fontSize="small" />,
       count: photos?.length,
+    },
+    {
+      path: paths.dashboardCollections,
+      label: "Collections",
+      icon: <CollectionsOutlinedIcon fontSize="small" />,
+      count: collections?.length,
     },
     {
       path: paths.dashboardAwards,

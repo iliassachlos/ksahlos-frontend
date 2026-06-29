@@ -9,6 +9,7 @@ import { GuestRoute } from "./guest-route";
 
 export const Homepage = lazy(() => import("@/pages/home/"));
 export const PhotosPage = lazy(() => import("@/pages/photos/"));
+export const CollectionPage = lazy(() => import("@/pages/collection/"));
 
 export const mainRoutes = [
   {
@@ -28,6 +29,10 @@ export const mainRoutes = [
       {
         path: paths.photos,
         element: <PhotosPage />,
+      },
+      {
+        path: paths.collectionDetail,
+        element: <CollectionPage />,
       },
       {
         path: paths.login,

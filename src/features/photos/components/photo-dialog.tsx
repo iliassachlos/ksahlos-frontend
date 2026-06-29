@@ -1,4 +1,5 @@
 import type { Photo } from "@/types/photos";
+import { useGetCollectionsQuery } from "@/store/apis/collections-api";
 import { capitalizeFirstLetter } from "@/utils/utils";
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -18,6 +19,11 @@ type PhotoDialogProps = {
 
 export const PhotoDialog: FC<PhotoDialogProps> = ({ photo, onClose }) => {
   const theme = useTheme();
+
+  const { data: collections } = useGetCollectionsQuery();
+  const collectionTitle = collections?.find(
+    (collection) => collection._id === photo.collectionId,
+  )?.title;
 
   return (
     <Dialog
@@ -83,7 +89,7 @@ export const PhotoDialog: FC<PhotoDialogProps> = ({ photo, onClose }) => {
                 letterSpacing: "0.22em",
               }}
             >
-              {photo.category}
+              {collectionTitle}
             </Typography>
 
             <Typography variant="h3">

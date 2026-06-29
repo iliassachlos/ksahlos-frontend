@@ -10,6 +10,9 @@ import { ProtectedRoute } from "./protected-route";
 export const DashboardPhotosPage = lazy(
   () => import("@/pages/dashboard/photos/"),
 );
+export const DashboardCollectionsPage = lazy(
+  () => import("@/pages/dashboard/collections/"),
+);
 export const DashboardAwardsPage = lazy(
   () => import("@/pages/dashboard/awards/"),
 );
@@ -34,6 +37,10 @@ export const dashboardRoutes = [
       {
         path: paths.dashboardPhotos,
         element: <DashboardPhotosPage />,
+      },
+      {
+        path: paths.dashboardCollections,
+        element: <DashboardCollectionsPage />,
       },
       {
         path: paths.dashboardAwards,

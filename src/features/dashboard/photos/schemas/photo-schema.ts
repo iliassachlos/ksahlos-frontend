@@ -5,7 +5,7 @@ import type { Photo } from "@/types/photos";
 const basePhotoSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().optional(),
-  category: z.string().min(1, "Category is required"),
+  collectionId: z.string().min(1, "Collection is required"),
 });
 
 // Additional validation for the image field based on whether it's an edit or a new photo
@@ -30,7 +30,7 @@ export const photoDefaultValues: PhotoFormValues = {
   image: null,
   title: "",
   description: "",
-  category: "",
+  collectionId: "",
 };
 
 /**
@@ -43,5 +43,5 @@ export const mapPhotoToFormValues = (photo: Photo): PhotoFormValues => ({
   image: null,
   title: photo.title,
   description: photo.description,
-  category: photo.category,
+  collectionId: photo.collectionId,
 });

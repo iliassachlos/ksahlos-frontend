@@ -4,7 +4,7 @@ import type { FC } from "react";
 import { useForm } from "react-hook-form";
 
 import { DialogCard } from "@/components/ui/dialog-card";
-import { RHFAutocomplete } from "@/components/ui/rhf-inputs/rhf-autocomplete";
+import { RHFSelect } from "@/components/ui/rhf-inputs/rhf-select";
 import { RHFTextField } from "@/components/ui/rhf-inputs/rhf-text-field";
 import { RHFUploadInput } from "@/components/ui/rhf-inputs/rhf-upload-input";
 import {
@@ -14,12 +14,11 @@ import {
   type PhotoFormValues,
   type PhotoSchema,
 } from "@/features/dashboard/photos/schemas/photo-schema";
+import { useGetCollectionsQuery } from "@/store/apis/collections-api";
 import {
   useAddPhotoMutation,
-  useGetPhotosQuery,
   useUpdatePhotoMutation,
 } from "@/store/apis/photos-api";
-import { capitalizeFirstLetter } from "@/utils/utils";
 import type { Photo } from "@/types/photos";
 
 type PhotoFormDialogProps = {
@@ -31,17 +30,16 @@ type PhotoFormDialogProps = {
 export const PhotoFormDialog: FC<PhotoFormDialogProps> = (props) => {
   const { isOpen, onClose, photo } = props;
 
-  const { data: photos } = useGetPhotosQuery();
+  const { data: collections } = useGetCollectionsQuery();
   const [addPhoto, { isLoading: isAdding }] = useAddPhotoMutation();
   const [updatePhoto, { isLoading: isUpdating }] = useUpdatePhotoMutation();
 
   const isLoading = isAdding || isUpdating;
 
-  const categories = [
-    ...new Set(
-      (photos ?? []).map((photo) => capitalizeFirstLetter(photo.category)),
-    ),
-  ];
+  const collectionOptions = (collections ?? []).map((collection) => ({
+    value: collection._id,
+    label: collection.title,
+  }));
 
   const { control, handleSubmit } = useForm<
     PhotoFormValues,
@@ -59,7 +57,7 @@ export const PhotoFormDialog: FC<PhotoFormDialogProps> = (props) => {
 
     formData.append("title", data.title ?? "");
     formData.append("description", data.description ?? "");
-    formData.append("category", data.category.toLowerCase() ?? "");
+    formData.append("collectionId", data.collectionId);
 
     if (photo) {
       await updatePhoto({ id: photo._id, body: formData });
@@ -102,12 +100,11 @@ export const PhotoFormDialog: FC<PhotoFormDialogProps> = (props) => {
           maxRows={4}
         />
 
-        <RHFAutocomplete
-          name="category"
+        <RHFSelect
+          name="collectionId"
           control={control}
-          options={categories}
-          label="Category"
-          placeholder="Select or create a category"
+          options={collectionOptions}
+          label="Collection"
           fullWidth
         />
 

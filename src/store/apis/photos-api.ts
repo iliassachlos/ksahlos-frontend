@@ -9,7 +9,7 @@ type PhotosResponse = {
 
 export type PhotoFilters = {
   title?: string;
-  category?: string;
+  collection?: string;
 };
 
 export const photosApi = createApi({
@@ -21,7 +21,7 @@ export const photosApi = createApi({
       query: (filters) => {
         const params: Record<string, string> = {};
         if (filters?.title) params.title = filters.title;
-        if (filters?.category) params.category = filters.category;
+        if (filters?.collection) params.collection = filters.collection;
 
         return { url: "/photos", params };
       },

@@ -1,8 +1,4 @@
 import {
-  collectionCategories,
-  type CollectionCategory,
-} from "@/data/collection-categories";
-import {
   Box,
   Card,
   CardMedia,
@@ -12,36 +8,42 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import React from "react";
 import EastIcon from "@mui/icons-material/East";
 import { useNavigate } from "react-router-dom";
+
+import { useGetCollectionsQuery } from "@/store/apis/collections-api";
+import type { Collection } from "@/types/collections";
 
 export const Collections = () => {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const renderCollectionCard = (collection: CollectionCategory) => (
-    <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
+  const { data: collections } = useGetCollectionsQuery({ visibility: true });
+
+  const renderCollectionCard = (collection: Collection) => (
+    <Grid size={{ xs: 12, sm: 6, lg: 4 }} key={collection._id}>
       <Card
-        key={collection.title}
-        onClick={() => navigate(`/photos?category=${collection.slug}`)}
+        onClick={() => navigate(`/collections/${collection.slug}`)}
         sx={{
           position: "relative",
           aspectRatio: "3/4",
           overflow: "hidden",
           cursor: "pointer",
+          bgcolor: theme.palette.background.tinted,
           "&:hover .img": { transform: "scale(1.05)" },
         }}
       >
-        <CardMedia
-          className="img"
-          image={collection.image}
-          sx={{
-            position: "absolute",
-            inset: 0,
-            transition: "transform 1.1s cubic-bezier(.16,1,.3,1)",
-          }}
-        />
+        {collection.coverPhoto?.url && (
+          <CardMedia
+            className="img"
+            image={collection.coverPhoto.url}
+            sx={{
+              position: "absolute",
+              inset: 0,
+              transition: "transform 1.1s cubic-bezier(.16,1,.3,1)",
+            }}
+          />
+        )}
         <Box
           sx={{
             position: "absolute",
@@ -64,7 +66,6 @@ export const Collections = () => {
         >
           <Typography variant="h5">{collection.title}</Typography>
           <IconButton
-            onClick={() => navigate(`/collections/${collection.slug}`)}
             sx={{
               border: "1px solid white",
               "&:hover": {
@@ -99,11 +100,7 @@ export const Collections = () => {
       </Typography>
 
       <Grid container spacing={3.5} sx={{ width: "100%" }}>
-        {collectionCategories.map((category, index) => (
-          <React.Fragment key={`${category.title}-${index}`}>
-            {renderCollectionCard(category)}
-          </React.Fragment>
-        ))}
+        {(collections ?? []).map(renderCollectionCard)}
       </Grid>
     </Stack>
   );

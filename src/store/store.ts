@@ -4,6 +4,7 @@ import { type TypedUseSelectorHook, useDispatch, useSelector } from "react-redux
 
 import { authApi } from "./apis/auth-api";
 import { awardsApi } from "./apis/awards-api";
+import { collectionsApi } from "./apis/collections-api";
 import { photosApi } from "./apis/photos-api";
 import { rootReducer } from "./root-reducer";
 import { rtkErrorToast } from "./rtk-error-toast";
@@ -16,6 +17,7 @@ export const setupStore = (preloadedState?: Partial<RootState>) => {
         awardsApi.middleware,
         authApi.middleware,
         photosApi.middleware,
+        collectionsApi.middleware,
         rtkErrorToast,
       ),
     preloadedState,

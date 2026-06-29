@@ -2,7 +2,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import {
   Button,
   Divider,
-  IconButton,
   InputAdornment,
   MenuItem,
   Select,
@@ -38,12 +37,12 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
+import { useGetCollectionsQuery } from "@/store/apis/collections-api";
 import {
   useGetPhotosQuery,
   useRearrangePhotosMutation,
   type PhotoFilters,
 } from "@/store/apis/photos-api";
-import { capitalizeFirstLetter } from "@/utils/utils";
 import type { Photo } from "@/types/photos";
 
 import { PhotoRow } from "./photo-row";
@@ -52,7 +51,7 @@ import InfoIcon from "@mui/icons-material/Info";
 
 const defaultFilters: PhotoFilters = {
   title: "",
-  category: "",
+  collection: "",
 };
 
 export const PhotoList: FC = () => {
@@ -60,7 +59,7 @@ export const PhotoList: FC = () => {
   const [appliedFilters, setAppliedFilters] =
     useState<PhotoFilters>(defaultFilters);
 
-  const { data: allPhotos } = useGetPhotosQuery();
+  const { data: collections } = useGetCollectionsQuery();
   const { data: photos } = useGetPhotosQuery(appliedFilters);
   const [rearrangePhotos, { isLoading: isSaving }] =
     useRearrangePhotosMutation();
@@ -109,12 +108,8 @@ export const PhotoList: FC = () => {
   };
 
   const hasActiveFilters = Boolean(
-    appliedFilters.title || appliedFilters.category,
+    appliedFilters.title || appliedFilters.collection,
   );
-
-  const categories = [
-    ...new Set((allPhotos ?? []).map((photo) => photo.category)),
-  ];
 
   const handleTitleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -122,11 +117,11 @@ export const PhotoList: FC = () => {
     setFilters((prevFilters) => ({ ...prevFilters, title: e.target.value }));
   };
 
-  const handleCategoryChange = (e: SelectChangeEvent) => {
-    const category = e.target.value;
+  const handleCollectionChange = (e: SelectChangeEvent) => {
+    const collection = e.target.value;
 
-    setFilters((prevFilters) => ({ ...prevFilters, category }));
-    setAppliedFilters((prev) => ({ ...prev, category }));
+    setFilters((prevFilters) => ({ ...prevFilters, collection }));
+    setAppliedFilters((prev) => ({ ...prev, collection }));
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -179,15 +174,15 @@ export const PhotoList: FC = () => {
           <Select
             size="small"
             name="category"
-            value={filters.category}
-            onChange={handleCategoryChange}
+            value={filters.collection}
+            onChange={handleCollectionChange}
             displayEmpty
             sx={{ minWidth: 220 }}
           >
-            <MenuItem value="">All categories</MenuItem>
-            {categories.map((category) => (
-              <MenuItem key={category} value={category}>
-                {capitalizeFirstLetter(category)}
+            <MenuItem value="">All collections</MenuItem>
+            {(collections ?? []).map((collection) => (
+              <MenuItem key={collection._id} value={collection.slug}>
+                {collection.title}
               </MenuItem>
             ))}
           </Select>

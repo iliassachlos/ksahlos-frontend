@@ -2,7 +2,7 @@ import { Box, Chip, Stack, Typography, useTheme } from "@mui/material";
 import type { FC } from "react";
 
 import type { Photo } from "@/types/photos";
-import { capitalizeFirstLetter } from "@/utils/utils";
+import { useGetCollectionsQuery } from "@/store/apis/collections-api";
 import CircleIcon from "@mui/icons-material/Circle";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { EditPhoto } from "../photo-form/edit-photo";
@@ -16,6 +16,11 @@ type PhotoRowProps = {
 
 export const PhotoRow: FC<PhotoRowProps> = ({ photo, index, isArranging }) => {
   const theme = useTheme();
+
+  const { data: collections } = useGetCollectionsQuery();
+  const collectionTitle = collections?.find(
+    (collection) => collection._id === photo.collectionId,
+  )?.title;
 
   return (
     <Stack
@@ -77,7 +82,7 @@ export const PhotoRow: FC<PhotoRowProps> = ({ photo, index, isArranging }) => {
         <Chip
           size="small"
           variant="outlined"
-          label={capitalizeFirstLetter(photo.category)}
+          label={collectionTitle ?? "—"}
           icon={<CircleIcon />}
           sx={{
             p: 1,

@@ -3,11 +3,11 @@ export interface Photo {
   title: string;
   description: string;
   url: string;
-  category: string;
+  collectionId: string;
   number: number;
   visibility: boolean;
   cloudinaryId: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
+  createdAt?: string;
+  updatedAt?: string;
+  __v?: number;
 }

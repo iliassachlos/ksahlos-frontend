@@ -1,7 +1,3 @@
-import { useGetCollectionsQuery } from "@/store/apis/collections-api";
-import { useGetPhotosQuery } from "@/store/apis/photos-api";
-import type { Photo } from "@/types/photos";
-import WestIcon from "@mui/icons-material/West";
 import Masonry from "@mui/lab/Masonry";
 import {
   Box,
@@ -12,27 +8,22 @@ import {
   useTheme,
 } from "@mui/material";
 import { useState, type FC } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { PhotoDialog } from "../components/photo-dialog";
+import { useNavigate, useParams } from "react-router-dom";
+import WestIcon from "@mui/icons-material/West";
+
+import { PhotoDialog } from "@/features/photos/components/photo-dialog";
+import { useGetCollectionQuery } from "@/store/apis/collections-api";
+import type { Photo } from "@/types/photos";
 
 const SKELETON_HEIGHTS = [
   280, 380, 320, 420, 300, 360, 440, 290, 350, 410, 270, 390,
 ];
 
-export const PhotosView: FC = () => {
+export const CollectionView: FC = () => {
+  const { slug = "" } = useParams();
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
 
-  const [searchParams] = useSearchParams();
-  const collectionSlug = searchParams.get("collection");
-
-  const { data: collections } = useGetCollectionsQuery();
-  const { data: photos, isLoading } = useGetPhotosQuery(
-    collectionSlug ? { collection: collectionSlug } : undefined,
-  );
-
-  const collectionTitle = collections?.find(
-    (collection) => collection.slug === collectionSlug,
-  )?.title;
+  const { data: collection, isLoading } = useGetCollectionQuery(slug);
 
   const theme = useTheme();
   const navigate = useNavigate();
@@ -76,9 +67,7 @@ export const PhotosView: FC = () => {
             <WestIcon fontSize="small" />
           </IconButton>
 
-           <Typography variant="h3">
-            {collectionTitle ?? ""}
-          </Typography>
+          <Typography variant="h3">{collection?.title ?? ""}</Typography>
         </Stack>
 
         <Masonry
@@ -94,7 +83,7 @@ export const PhotosView: FC = () => {
                   sx={{ height: h, borderRadius: 1 }}
                 />
               ))
-            : (photos ?? []).map((photo) => (
+            : (collection?.photos ?? []).map((photo) => (
                 <Box
                   key={photo._id}
                   onClick={() => setSelectedPhoto(photo)}
