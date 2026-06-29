@@ -2,6 +2,7 @@ import type { Photo } from "@/types/photos";
 import { createApi } from "@reduxjs/toolkit/query/react";
 
 import { baseQuery } from "@/store/base-query";
+import { collectionsApi } from "./collections-api";
 
 type PhotosResponse = {
   data: Photo[];
@@ -10,6 +11,22 @@ type PhotosResponse = {
 export type PhotoFilters = {
   title?: string;
   collection?: string;
+};
+
+// Photo changes affect collection contents and the resolved cover photo, which
+// live in a separate API slice — cross-invalidate Collections after success.
+const invalidateCollections = async (
+  _arg: unknown,
+  {
+    dispatch,
+    queryFulfilled,
+  }: {
+    dispatch: (action: unknown) => unknown;
+    queryFulfilled: Promise<unknown>;
+  },
+) => {
+  await queryFulfilled;
+  dispatch(collectionsApi.util.invalidateTags(["Collections"]));
 };
 
 export const photosApi = createApi({
@@ -36,6 +53,7 @@ export const photosApi = createApi({
       }),
       transformResponse: (response: { data: Photo }) => response.data,
       invalidatesTags: ["Photos"],
+      onQueryStarted: invalidateCollections,
     }),
     updatePhoto: builder.mutation<Photo, { id: string; body: FormData }>({
       query: ({ id, body }) => ({
@@ -45,6 +63,7 @@ export const photosApi = createApi({
       }),
       transformResponse: (response: { data: Photo }) => response.data,
       invalidatesTags: ["Photos"],
+      onQueryStarted: invalidateCollections,
     }),
     deletePhoto: builder.mutation<void, string>({
       query: (id) => ({
@@ -52,6 +71,7 @@ export const photosApi = createApi({
         method: "DELETE",
       }),
       invalidatesTags: ["Photos"],
+      onQueryStarted: invalidateCollections,
     }),
     rearrangePhotos: builder.mutation<void, string[]>({
       query: (orderedIds) => ({
@@ -60,6 +80,7 @@ export const photosApi = createApi({
         body: { orderedIds },
       }),
       invalidatesTags: ["Photos"],
+      onQueryStarted: invalidateCollections,
     }),
   }),
 });
