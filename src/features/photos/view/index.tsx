@@ -30,12 +30,12 @@ export const PhotosView: FC = () => {
     collectionSlug ? { collection: collectionSlug } : undefined,
   );
 
+  const theme = useTheme();
+  const navigate = useNavigate();
+
   const collectionTitle = collections?.find(
     (collection) => collection.slug === collectionSlug,
   )?.title;
-
-  const theme = useTheme();
-  const navigate = useNavigate();
 
   return (
     <>
@@ -76,9 +76,7 @@ export const PhotosView: FC = () => {
             <WestIcon fontSize="small" />
           </IconButton>
 
-           <Typography variant="h3">
-            {collectionTitle ?? ""}
-          </Typography>
+          <Typography variant="h3">{collectionTitle ?? ""}</Typography>
         </Stack>
 
         <Masonry

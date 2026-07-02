@@ -1,16 +1,9 @@
 import type { Photo } from "@/types/photos";
-import { useGetCollectionsQuery } from "@/store/apis/collections-api";
 import { capitalizeFirstLetter } from "@/utils/utils";
 import CloseIcon from "@mui/icons-material/Close";
-import {
-  Box,
-  Dialog,
-  IconButton,
-  Stack,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import type { FC } from "react";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { Box, Dialog, IconButton, Stack, Typography } from "@mui/material";
+import { useState, type FC } from "react";
 
 type PhotoDialogProps = {
   photo: Photo;
@@ -18,12 +11,39 @@ type PhotoDialogProps = {
 };
 
 export const PhotoDialog: FC<PhotoDialogProps> = ({ photo, onClose }) => {
-  const theme = useTheme();
+  const [showInfo, setShowInfo] = useState(false);
 
-  const { data: collections } = useGetCollectionsQuery();
-  const collectionTitle = collections?.find(
-    (collection) => collection._id === photo.collectionId,
-  )?.title;
+  const controlButtonSx = {
+    color: "white",
+    bgcolor: "rgba(0, 0, 0, 0.45)",
+    backdropFilter: "blur(6px)",
+    "&:hover": { bgcolor: "rgba(0, 0, 0, 0.65)" },
+  };
+
+  const renderToolbar = () => (
+    <Stack
+      direction="row"
+      sx={{
+        position: "fixed",
+        bottom: 32,
+        left: "50%",
+        transform: "translateX(-50%)",
+        gap: 2,
+      }}
+    >
+      <IconButton
+        onClick={() => setShowInfo((prev) => !prev)}
+        aria-label="Toggle info"
+        sx={controlButtonSx}
+      >
+        <InfoOutlinedIcon />
+      </IconButton>
+
+      <IconButton onClick={onClose} aria-label="Close" sx={controlButtonSx}>
+        <CloseIcon />
+      </IconButton>
+    </Stack>
+  );
 
   return (
     <Dialog
@@ -31,77 +51,67 @@ export const PhotoDialog: FC<PhotoDialogProps> = ({ photo, onClose }) => {
       onClose={onClose}
       maxWidth={false}
       slotProps={{
-        backdrop: { sx: { backgroundColor: "rgba(0,0,0,0.6)" } },
+        backdrop: { sx: { backgroundColor: "rgba(0, 0, 0, 0.85)" } },
         paper: {
           sx: {
-            borderRadius: 2,
-            overflow: "hidden",
-            width: "90vw",
-            maxWidth: 1200,
-            maxHeight: "88vh",
-            m: 2,
+            bgcolor: "transparent",
+            boxShadow: "none",
+            m: 0,
+            overflow: "visible",
+            maxWidth: "none",
+            maxHeight: "none",
           },
         },
       }}
     >
-      <Stack
-        direction={{ xs: "column", md: "row" }}
-        sx={{ height: "100%", minHeight: 0 }}
-      >
+      <Box sx={{ position: "relative", display: "inline-flex" }}>
         <Box
           component="img"
           src={photo.url}
           alt={photo.title}
           sx={{
-            flex: "0 0 62%",
-            position: "relative",
-            backgroundColor: theme.palette.grey[200],
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            overflow: "hidden",
-            minHeight: { xs: 260, md: "unset" },
+            display: "block",
+            maxWidth: "92vw",
+            maxHeight: "80vh",
             objectFit: "contain",
+            borderRadius: 2,
           }}
         />
 
-        <Stack
-          direction="column"
-          sx={{
-            flex: "1 1 38%",
-            backgroundColor: theme.palette.background.default,
-            p: { xs: 4, md: 5 },
-            gap: 2.5,
-            overflowY: "auto",
-          }}
-        >
-          <Stack direction="row" sx={{ justifyContent: "flex-end" }}>
-            <IconButton onClick={onClose} aria-label="Close" size="small">
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          </Stack>
-
-          <Stack direction="column" sx={{ gap: 2, flex: 1 }}>
-            <Typography
-              variant="overline"
-              sx={{
-                color: theme.palette.text.disabled,
-                letterSpacing: "0.22em",
-              }}
-            >
-              {collectionTitle}
-            </Typography>
-
-            <Typography variant="h3">
+        {showInfo && (
+          <Stack
+            direction="column"
+            sx={{
+              position: "absolute",
+              inset: 0,
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+              gap: 2,
+              p: { xs: 4, md: 8 },
+              borderRadius: 2,
+              bgcolor: "rgba(255, 255, 255, 0.7)",
+              backdropFilter: "blur(16px)",
+            }}
+          >
+            <Typography variant="h4" sx={{ fontWeight: 500, maxWidth: 640 }}>
               {capitalizeFirstLetter(photo.title)}
             </Typography>
 
-            <Typography variant="body1" color="textSecondary">
-              {photo.description}
-            </Typography>
+            {photo.description && (
+              <Typography
+                variant="h5"
+                color="textSecondary"
+                sx={{ maxWidth: 640 }}
+              >
+                {photo.description}
+              </Typography>
+            )}
           </Stack>
-        </Stack>
-      </Stack>
+        )}
+      </Box>
+
+      {renderToolbar()}
     </Dialog>
   );
 };
