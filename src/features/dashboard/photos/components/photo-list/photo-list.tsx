@@ -130,6 +130,113 @@ export const PhotoList: FC = () => {
     }
   };
 
+  const renderFilters = () => (
+    <Stack
+      direction="row"
+      sx={{
+        justifyContent: "space-between",
+        alignItems: "center",
+        alignSelf: "stretch",
+        gap: 1,
+      }}
+    >
+      <Stack
+        direction="row"
+        sx={{ justifyContent: " flex-start", alignItems: "center", gap: 2 }}
+      >
+        <TextField
+          size="small"
+          placeholder="Search by title..."
+          name="title"
+          value={filters.title}
+          onChange={handleTitleChange}
+          onKeyDown={handleKeyDown}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon fontSize="small" />
+                </InputAdornment>
+              ),
+            },
+          }}
+        />
+
+        <Select
+          size="small"
+          name="category"
+          value={filters.collection}
+          onChange={handleCollectionChange}
+          displayEmpty
+          sx={{ minWidth: 220 }}
+        >
+          <MenuItem value="">All collections</MenuItem>
+          {(collections ?? []).map((collection) => (
+            <MenuItem key={collection._id} value={collection.slug}>
+              {collection.title}
+            </MenuItem>
+          ))}
+        </Select>
+      </Stack>
+
+      <Stack
+        direction="row"
+        sx={{
+          justifyContent: "flex-start",
+          alignItems: "center",
+          alignSelf: "stretch",
+          gap: 2,
+        }}
+      >
+        {hasActiveFilters && (
+          <Tooltip
+            title={
+              hasActiveFilters
+                ? "Cannot arrange photos while filters are active"
+                : ""
+            }
+            placement="left"
+            arrow
+          >
+            <InfoIcon color="info" />
+          </Tooltip>
+        )}
+
+        <Button
+          variant={isArranging ? "contained" : "outlined"}
+          startIcon={<ArrangeIcon />}
+          onClick={handleToggleArrange}
+          loading={isSaving}
+          disabled={hasActiveFilters}
+          sx={{ height: 41 }}
+        >
+          {isArranging ? "Done" : "Arrange"}
+        </Button>
+      </Stack>
+    </Stack>
+  );
+
+  const renderPhotos = () => (
+    <>
+      {photos?.length ? (
+        photos.map((photo, index) => (
+          <Fragment key={photo._id}>
+            {index > 0 && <Divider />}
+            <PhotoRow photo={photo} index={index} />
+          </Fragment>
+        ))
+      ) : (
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          sx={{ p: 4, textAlign: "center" }}
+        >
+          No photos found.
+        </Typography>
+      )}
+    </>
+  );
+
   return (
     <Stack
       direction="column"
@@ -140,89 +247,7 @@ export const PhotoList: FC = () => {
         gap: 2,
       }}
     >
-      <Stack
-        direction="row"
-        sx={{
-          justifyContent: "space-between",
-          alignItems: "center",
-          alignSelf: "stretch",
-          gap: 1,
-        }}
-      >
-        <Stack
-          direction="row"
-          sx={{ justifyContent: " flex-start", alignItems: "center", gap: 2 }}
-        >
-          <TextField
-            size="small"
-            placeholder="Search by title..."
-            name="title"
-            value={filters.title}
-            onChange={handleTitleChange}
-            onKeyDown={handleKeyDown}
-            slotProps={{
-              input: {
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon fontSize="small" />
-                  </InputAdornment>
-                ),
-              },
-            }}
-          />
-
-          <Select
-            size="small"
-            name="category"
-            value={filters.collection}
-            onChange={handleCollectionChange}
-            displayEmpty
-            sx={{ minWidth: 220 }}
-          >
-            <MenuItem value="">All collections</MenuItem>
-            {(collections ?? []).map((collection) => (
-              <MenuItem key={collection._id} value={collection.slug}>
-                {collection.title}
-              </MenuItem>
-            ))}
-          </Select>
-        </Stack>
-
-        <Stack
-          direction="row"
-          sx={{
-            justifyContent: "flex-start",
-            alignItems: "center",
-            alignSelf: "stretch",
-            gap: 2,
-          }}
-        >
-          {hasActiveFilters && (
-            <Tooltip
-              title={
-                hasActiveFilters
-                  ? "Cannot arrange photos while filters are active"
-                  : ""
-              }
-              placement="left"
-              arrow
-            >
-              <InfoIcon color="info" />
-            </Tooltip>
-          )}
-
-          <Button
-            variant={isArranging ? "contained" : "outlined"}
-            startIcon={<ArrangeIcon />}
-            onClick={handleToggleArrange}
-            loading={isSaving}
-            disabled={hasActiveFilters}
-            sx={{ height: 41 }}
-          >
-            {isArranging ? "Done" : "Arrange"}
-          </Button>
-        </Stack>
-      </Stack>
+      {renderFilters()}
 
       <Stack
         direction="column"
@@ -252,21 +277,8 @@ export const PhotoList: FC = () => {
               ))}
             </SortableContext>
           </DndContext>
-        ) : photos?.length ? (
-          photos.map((photo, index) => (
-            <Fragment key={photo._id}>
-              {index > 0 && <Divider />}
-              <PhotoRow photo={photo} index={index} />
-            </Fragment>
-          ))
         ) : (
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            sx={{ p: 4, textAlign: "center" }}
-          >
-            No photos found.
-          </Typography>
+          renderPhotos()
         )}
       </Stack>
     </Stack>

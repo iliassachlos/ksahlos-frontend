@@ -59,6 +59,7 @@ export const CollectionRow: FC<CollectionRowProps> = ({
           <Typography variant="subtitle1" sx={{ fontWeight: 500 }} noWrap>
             {collection.title}
           </Typography>
+
           {!collection.visibility && (
             <Chip
               size="small"
@@ -69,6 +70,7 @@ export const CollectionRow: FC<CollectionRowProps> = ({
             />
           )}
         </Stack>
+
         <Typography variant="body2" color="textDisabled" sx={{ fontSize: 14 }}>
           /{collection.slug}
         </Typography>
@@ -80,7 +82,7 @@ export const CollectionRow: FC<CollectionRowProps> = ({
           sx={{ color: theme.palette.text.disabled }}
         />
       ) : (
-        <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>
+        <Stack direction="row" sx={{ alignItems: "center", gap: 4 }}>
           <Button
             size="small"
             variant="outlined"
@@ -89,8 +91,14 @@ export const CollectionRow: FC<CollectionRowProps> = ({
           >
             Cover
           </Button>
-          <EditCollection collection={collection} />
-          <DeleteCollection collectionId={collection._id} />
+
+          <Stack
+            direction="row"
+            sx={{ justifyContent: "flex-start", alignItems: "center", gap: 1 }}
+          >
+            <EditCollection collection={collection} />
+            <DeleteCollection collectionId={collection._id} />
+          </Stack>
         </Stack>
       )}
 
