@@ -47,7 +47,7 @@ export const photosApi = createApi({
     }),
     addPhoto: builder.mutation<Photo, FormData>({
       query: (body) => ({
-        url: "/photos/create",
+        url: "/photos",
         method: "POST",
         body,
       }),

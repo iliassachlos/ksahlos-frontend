@@ -18,7 +18,7 @@ export const awardsApi = createApi({
     }),
     addAward: builder.mutation<Award, FormData>({
       query: (body) => ({
-        url: "/awards/create",
+        url: "/awards",
         method: "POST",
         body,
       }),
