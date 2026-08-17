@@ -1,14 +1,10 @@
 import { Button, Stack, Typography, useTheme } from "@mui/material";
 import type { FC } from "react";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import InstagramIcon from "@mui/icons-material/Instagram";
+
+import { HEADER_HEIGHT } from "@/data/globals";
 
 const socialMedias = [
-  {
-    label: "Instagram",
-    icon: <InstagramIcon sx={{ fontSize: 20 }} />,
-    href: "https://www.instagram.com/ksahlos_photo/",
-  },
   {
     label: "Facebook",
     icon: <FacebookIcon sx={{ fontSize: 20 }} />,
@@ -21,6 +17,7 @@ export const Contact: FC = () => {
 
   return (
     <Stack
+      id="contact"
       direction="column"
       sx={{
         justifyContent: "center",
@@ -28,6 +25,7 @@ export const Contact: FC = () => {
         alignSelf: "stretch",
         py: 16,
         gap: 3.5,
+        scrollMarginTop: `${HEADER_HEIGHT}px`,
       }}
     >
       <Typography

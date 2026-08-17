@@ -55,21 +55,21 @@ export const Hero: FC = () => {
           position: "absolute",
           inset: 0,
           bgcolor: HERO_OVERLAY_COLOR,
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
+          backdropFilter: "blur(6px)",
+          WebkitBackdropFilter: "blur(4px)",
         }}
       />
 
       <Stack
-        direction="row"
+        direction={{ xs: "column", md: "row" }}
         sx={{
-          justifyContent: "space-between",
+          justifyContent: { xs: "flex-end", md: "space-between" },
           position: "relative",
           zIndex: 1,
           height: "100%",
-          maxWidth: 1152,
-          mx: "auto",
-          pb: 6,
+          mx: { xs: 3, sm: 4, md: 7 },
+          pb: { xs: 5, md: 6 },
+          gap: { xs: 5, md: 0 },
         }}
       >
         <Stack
@@ -78,29 +78,38 @@ export const Hero: FC = () => {
             justifyContent: "flex-end",
             alignItems: "flex-start",
             flexGrow: 1,
-            maxWidth: 620,
-            gap: 3.25,
+            maxWidth: { xs: "100%", md: 720 },
+            gap: { xs: 2.5, md: 3.25 },
           }}
         >
-          <Typography
-            variant="overline"
+          <Stack
+            direction="column"
             sx={{
-              color: alpha(textColor, 0.9),
-              textTransform: "uppercase",
+              justifyContent: "center",
+              alignItems: "flex-start",
+              gap: 2,
             }}
           >
-            Fine-Art Photography &amp; Digital Painting
-          </Typography>
+            <Typography
+              variant="overline"
+              sx={{
+                color: alpha(textColor, 0.9),
+                textTransform: "uppercase",
+              }}
+            >
+              Fine-Art Photography &amp; Digital Creations
+            </Typography>
 
-          <Typography
-            variant="h1"
-            sx={{
-              color: textColor,
-              fontSize: { xs: 60, md: 82 },
-            }}
-          >
-            Steps beyond reality
-          </Typography>
+            <Typography
+              variant="h1"
+              sx={{
+                color: textColor,
+                fontSize: { xs: 42, sm: 56, md: 91 },
+              }}
+            >
+              Timeless steps beyond reality
+            </Typography>
+          </Stack>
 
           <Typography
             variant="subtitle1"
@@ -110,8 +119,7 @@ export const Hero: FC = () => {
               maxWidth: "40ch",
             }}
           >
-            Abstract, minimal and surreal works — printed by hand on museum
-            cotton.
+           Minimal and surreal artworks on cotton paper and canvas
           </Typography>
 
           <Button
@@ -136,6 +144,7 @@ export const Hero: FC = () => {
           <Stack
             direction="row"
             sx={{
+              justifyContent: { xs: "center", md: "flex-start" },
               alignItems: "flex-end",
               gap: 2,
             }}
@@ -166,7 +175,10 @@ export const Hero: FC = () => {
                   {String(activeIndex + 1).padStart(2, "0")}
                 </Typography>
 
-                <Stack direction="row" sx={{ alignItems: "flex-end", gap: 1 }}>
+                <Stack
+                  direction="row"
+                  sx={{ alignItems: "flex-end", gap: { xs: 0.75, md: 1 } }}
+                >
                   {photos.map((photo, index) => (
                     <Box
                       key={photo._id}
@@ -184,8 +196,14 @@ export const Hero: FC = () => {
                         borderRadius: 1,
                         overflow: "hidden",
                         cursor: "pointer",
-                        height: index === activeIndex ? 88 : 66,
-                        maxWidth: index === activeIndex ? 132 : 96,
+                        height:
+                          index === activeIndex
+                            ? { xs: 64, md: 88 }
+                            : { xs: 46, md: 66 },
+                        maxWidth:
+                          index === activeIndex
+                            ? { xs: 88, md: 132 }
+                            : { xs: 60, md: 96 },
                         transition:
                           "height .35s ease, max-width .35s ease, border-color .35s ease",
                       }}

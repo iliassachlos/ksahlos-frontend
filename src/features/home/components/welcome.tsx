@@ -1,6 +1,8 @@
 import { Box, Stack, Typography, useTheme } from "@mui/material";
 import type { FC } from "react";
 
+import { HEADER_HEIGHT } from "@/data/globals";
+
 const stats = [
   { value: "1977", label: "Since" },
   { value: "100%", label: "Cotton paper" },
@@ -12,6 +14,7 @@ export const Welcome: FC = () => {
 
   return (
     <Stack
+      id="about"
       direction={{ xs: "column", md: "row" }}
       sx={{
         justifyContent: "flex-start",
@@ -19,13 +22,14 @@ export const Welcome: FC = () => {
         alignSelf: "stretch",
         py: 16,
         gap: { xs: 4, md: 10 },
+        scrollMarginTop: `${HEADER_HEIGHT}px`,
       }}
     >
       <Stack
         direction="column"
         sx={{
           flex: 2,
-          justifyContent: "center",
+          justifyContent: "flex-start",
           alignItems: "flex-start",
           alignSelf: "stretch",
           gap: 3.5,
@@ -63,14 +67,14 @@ export const Welcome: FC = () => {
         }}
       >
         <Typography variant="body1">
-          I specialize in visual artwork influenced by abstract, minimalist and
+          I specialize in visual artwork influenced by minimalist and
           surreal styles, created using in-camera and post-processing
           techniques.
         </Typography>
 
         <Typography variant="body1" sx={{ mt: 2.5 }}>
           Printing is performed personally using pigment-ink printers on 100%
-          cotton, museum-quality paper for the highest archival resistance.
+          cotton, museum-quality paper for the highest archival resistance, and canvas in .
           Every print ships with a Certificate of Authenticity.
         </Typography>
 

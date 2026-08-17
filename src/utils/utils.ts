@@ -18,9 +18,3 @@ export const capitalizeFirstLetter = (str: string): string => {
  */
 export const isLightColor = (color: string, threshold = 0.5): boolean =>
   getLuminance(color) > threshold;
-
-export const scrollToView = (elementId: string) => {
-   document
-      .getElementById(elementId)
-      ?.scrollIntoView({ behavior: "smooth" });
-}

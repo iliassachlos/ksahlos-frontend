@@ -10,7 +10,7 @@ interface PhotoCarouselProps {
   isLoading?: boolean;
 }
 
-const CARD_HEIGHT = { xs: 280, md: 420 };
+const CARD_HEIGHT = { xs: 280, md: 320 };
 const GAP = 24;
 
 export const PhotoCarousel: FC<PhotoCarouselProps> = ({ items, isLoading }) => {

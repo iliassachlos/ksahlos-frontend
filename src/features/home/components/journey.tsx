@@ -86,6 +86,7 @@ export const Journey: FC = () => {
 
   return (
     <Stack
+      id="my-journey"
       direction={{ xs: "column", md: "row" }}
       sx={{
         justifyContent: "flex-start",
@@ -93,6 +94,7 @@ export const Journey: FC = () => {
         alignSelf: "stretch",
         py: 16,
         gap: { xs: 6, md: 10 },
+        scrollMarginTop: `${HEADER_HEIGHT}px`,
       }}
     >
       <Stack
