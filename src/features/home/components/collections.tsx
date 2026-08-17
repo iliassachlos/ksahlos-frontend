@@ -11,6 +11,7 @@ import {
 import EastIcon from "@mui/icons-material/East";
 import { useNavigate } from "react-router-dom";
 
+import { HEADER_HEIGHT } from "@/data/globals";
 import { useGetCollectionsQuery } from "@/store/apis/collections-api";
 import type { Collection } from "@/types/collections";
 
@@ -83,6 +84,7 @@ export const Collections = () => {
 
   return (
     <Stack
+      id="collections"
       direction="column"
       sx={{
         justifyContent: "center",
@@ -90,6 +92,7 @@ export const Collections = () => {
         alignSelf: "stretch",
         py: 16,
         gap: 3.5,
+        scrollMarginTop: `${HEADER_HEIGHT}px`,
       }}
     >
       <Typography

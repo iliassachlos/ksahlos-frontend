@@ -6,6 +6,7 @@ export interface Photo {
   collectionId: string;
   number: number;
   visibility: boolean;
+  hero: boolean;
   cloudinaryId: string;
   createdAt?: string;
   updatedAt?: string;
