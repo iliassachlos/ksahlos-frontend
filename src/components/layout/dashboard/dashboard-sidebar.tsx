@@ -24,6 +24,7 @@ import { paths } from "@/routes/paths";
 import { useGetAwardsQuery } from "@/store/apis/awards-api";
 import { useGetCollectionsQuery } from "@/store/apis/collections-api";
 import { useGetPhotosQuery } from "@/store/apis/photos-api";
+import { TOKEN_STORAGE_KEY } from "@/utils/auth";
 
 export const DashboardSidebar: FC = () => {
   const { data: photos } = useGetPhotosQuery();
@@ -56,7 +57,7 @@ export const DashboardSidebar: FC = () => {
   ];
 
   const onLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem(TOKEN_STORAGE_KEY);
 
     navigate(paths.login, { replace: true });
   };

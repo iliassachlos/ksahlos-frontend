@@ -1,17 +1,29 @@
 import { Box, Stack, Typography, useTheme } from "@mui/material";
+import { motion } from "framer-motion";
 import type { FC } from "react";
+
+import { HEADER_HEIGHT } from "@/data/globals";
+import {
+  slideInFromRight,
+  staggerContainer,
+  viewportOnce,
+} from "@/utils/animations";
 
 const stats = [
   { value: "1977", label: "Since" },
-  { value: "100%", label: "Cotton paper" },
   { value: "Global", label: "Shipping" },
+  { value: "Numbered", label: "Copies" },
 ];
+
+const revealFromRight = slideInFromRight();
+const container = staggerContainer();
 
 export const Welcome: FC = () => {
   const theme = useTheme();
 
   return (
     <Stack
+      id="about"
       direction={{ xs: "column", md: "row" }}
       sx={{
         justifyContent: "flex-start",
@@ -19,13 +31,14 @@ export const Welcome: FC = () => {
         alignSelf: "stretch",
         py: 16,
         gap: { xs: 4, md: 10 },
+        scrollMarginTop: `${HEADER_HEIGHT}px`,
       }}
     >
       <Stack
         direction="column"
         sx={{
           flex: 2,
-          justifyContent: "center",
+          justifyContent: "flex-start",
           alignItems: "flex-start",
           alignSelf: "stretch",
           gap: 3.5,
@@ -45,7 +58,7 @@ export const Welcome: FC = () => {
             letterSpacing: "-0.015em",
           }}
         >
-          My camera is not used to take photos — it is a tool to create{" "}
+          The camera is not used by me just to take photos — it is a tool to create{" "}
           <Box component="em" sx={{ fontStyle: "italic", fontWeight: 500 }}>
             fine art.
           </Box>
@@ -53,28 +66,40 @@ export const Welcome: FC = () => {
       </Stack>
 
       <Stack
+        component={motion.div}
         direction="column"
+        variants={container}
+        initial="hidden"
+        whileInView="visible"
+        viewport={viewportOnce()}
         sx={{
           flex: 3,
           justifyContent: "center",
           alignItems: "flex-start",
           alignSelf: "stretch",
           color: theme.palette.text.secondary,
+          overflow: "hidden",
         }}
       >
-        <Typography variant="body1">
-          I specialize in visual artwork influenced by abstract, minimalist and
-          surreal styles, created using in-camera and post-processing
-          techniques.
+        <Typography component={motion.p} variants={revealFromRight} variant="body1">
+          I specialize in visual artwork influenced by minimalist and surreal styles, created using
+          in-camera and post-processing techniques.
         </Typography>
 
-        <Typography variant="body1" sx={{ mt: 2.5 }}>
-          Printing is performed personally using pigment-ink printers on 100%
-          cotton, museum-quality paper for the highest archival resistance.
-          Every print ships with a Certificate of Authenticity.
+        <Typography
+          component={motion.p}
+          variants={revealFromRight}
+          variant="body1"
+          sx={{ mt: 2.5 }}
+        >
+          Printing is performed personally using pigment-ink printers and deliver the prints on museum-quality
+          paper for the highest archival resistance, and canvas signed by the artist. Every print ships with a
+          Certificate of Authenticity worldwide.
         </Typography>
 
         <Stack
+          component={motion.div}
+          variants={revealFromRight}
           direction={{ xs: "column", md: "row" }}
           sx={{
             justifyContent: { xs: "center", md: "flex-start" },

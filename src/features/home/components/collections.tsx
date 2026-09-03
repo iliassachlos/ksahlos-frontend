@@ -9,10 +9,15 @@ import {
   useTheme,
 } from "@mui/material";
 import EastIcon from "@mui/icons-material/East";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
+import { HEADER_HEIGHT } from "@/data/globals";
 import { useGetCollectionsQuery } from "@/store/apis/collections-api";
 import type { Collection } from "@/types/collections";
+import { slideUpStaggered, viewportOnce } from "@/utils/animations";
+
+const revealUp = slideUpStaggered();
 
 export const Collections = () => {
   const theme = useTheme();
@@ -20,8 +25,17 @@ export const Collections = () => {
 
   const { data: collections } = useGetCollectionsQuery({ visibility: true });
 
-  const renderCollectionCard = (collection: Collection) => (
-    <Grid size={{ xs: 12, sm: 6, lg: 4 }} key={collection._id}>
+  const renderCollectionCard = (collection: Collection, index: number) => (
+    <Grid
+      component={motion.div}
+      size={{ xs: 12, sm: 6, lg: 4 }}
+      key={collection._id}
+      custom={index}
+      variants={revealUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={viewportOnce(0.25)}
+    >
       <Card
         onClick={() => navigate(`/collections/${collection.slug}`)}
         sx={{
@@ -83,6 +97,7 @@ export const Collections = () => {
 
   return (
     <Stack
+      id="collections"
       direction="column"
       sx={{
         justifyContent: "center",
@@ -90,9 +105,16 @@ export const Collections = () => {
         alignSelf: "stretch",
         py: 16,
         gap: 3.5,
+        scrollMarginTop: `${HEADER_HEIGHT}px`,
       }}
     >
       <Typography
+        component={motion.p}
+        custom={0}
+        variants={revealUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={viewportOnce(0.25)}
         variant="overline"
         sx={{ display: "block", color: theme.palette.text.disabled }}
       >

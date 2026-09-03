@@ -25,33 +25,38 @@ export const soloExhibitions: Exhibition[] = [
 export const groupExhibitions: Exhibition[] = [
   {
     title: "Isolamento",
-    venue: "Myro Gallery · Thessaloniki",
+    venue: "Myro Gallery, Exhibition · Thessaloniki",
     date: "Sep 2024",
   },
   {
     title: "Oneiric Images",
-    venue: "Myro Gallery · Thessaloniki",
+    venue: "Myro Gallery, Exhibition · Thessaloniki",
     date: "Oct 2024",
   },
-  { title: "Photovision", venue: "Zappeion Hall · Athens", date: "Oct 2024" },
+  { title: "Photovision", venue: "Zappeion Hall, Exhibition · Athens", date: "Oct 2024" },
   {
-    title: "Mytilene Photography Club",
-    venue: "Main speaker · Mytilene",
+    title: "Fine Art",
+    venue: "Mytilene Photography Club, Main speaker · Mytilene",
     date: "Feb 2025",
   },
   {
     title: "From Photography to Art",
-    venue: "Out of Focus Club, main speaker · Thessaloniki",
+    venue: "Out of Focus Club, Main speaker · Thessaloniki",
     date: "Feb 2025",
   },
   {
     title: "Lesvos Artists",
-    venue: "Panellinion · Mytilene",
+    venue: "Panellinion, Exhibition · Mytilene",
     date: "May 2025",
   },
   {
     title: "Fluid Boundaries",
-    venue: "Peritechnon Gallery · Athens",
+    venue: "Peritechnon Gallery, Exhibition · Athens",
     date: "Jan 2026",
+  },
+  {
+    title: "From Photography to Art",
+    venue: "Mytilene Photography Club, Main speaker · Mytilene",
+    date: "May 2026",
   },
 ];

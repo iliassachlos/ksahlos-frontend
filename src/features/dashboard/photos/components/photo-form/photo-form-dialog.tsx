@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 
 import { DialogCard } from "@/components/ui/dialog-card";
 import { RHFSelect } from "@/components/ui/rhf-inputs/rhf-select";
+import { RHFSwitch } from "@/components/ui/rhf-inputs/rhf-switch";
 import { RHFTextField } from "@/components/ui/rhf-inputs/rhf-text-field";
 import { RHFUploadInput } from "@/components/ui/rhf-inputs/rhf-upload-input";
 import {
@@ -58,6 +59,7 @@ export const PhotoFormDialog: FC<PhotoFormDialogProps> = (props) => {
     formData.append("title", data.title ?? "");
     formData.append("description", data.description ?? "");
     formData.append("collectionId", data.collectionId);
+    formData.append("hero", String(data.hero));
 
     if (photo) {
       await updatePhoto({ id: photo._id, body: formData });
@@ -107,6 +109,8 @@ export const PhotoFormDialog: FC<PhotoFormDialogProps> = (props) => {
           label="Collection"
           fullWidth
         />
+
+        <RHFSwitch name="hero" control={control} label="Show on hero" />
 
         <Button
           type="submit"

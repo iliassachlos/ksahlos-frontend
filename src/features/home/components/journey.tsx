@@ -1,4 +1,5 @@
 import { alpha, Box, Stack, Typography, useTheme } from "@mui/material";
+import { motion } from "framer-motion";
 import type { FC } from "react";
 
 import { HEADER_HEIGHT } from "@/data/globals";
@@ -7,20 +8,36 @@ import {
   soloExhibitions,
   type Exhibition,
 } from "@/data/exhibitions";
+import {
+  slideInFromRight,
+  staggerContainer,
+  viewportOnce,
+} from "@/utils/animations";
+
+const revealFromRight = slideInFromRight();
+const container = staggerContainer();
 
 export const Journey: FC = () => {
   const theme = useTheme();
 
   const renderExhibitionList = (title: string, items: Exhibition[]) => (
     <Stack
+      component={motion.div}
       direction="column"
+      variants={container}
+      initial="hidden"
+      whileInView="visible"
+      viewport={viewportOnce(0.15)}
       sx={{
         justifyContent: "center",
         alignItems: "flex-start",
         alignSelf: "stretch",
+        overflow: "hidden",
       }}
     >
       <Typography
+        component={motion.p}
+        variants={revealFromRight}
         variant="overline"
         sx={{
           display: "block",
@@ -40,6 +57,8 @@ export const Journey: FC = () => {
       {items.map((item, index) => (
         <Stack
           key={`${item.title}-${index}`}
+          component={motion.div}
+          variants={revealFromRight}
           direction="row"
           sx={{
             justifyContent: "space-between",
@@ -86,6 +105,7 @@ export const Journey: FC = () => {
 
   return (
     <Stack
+      id="my-journey"
       direction={{ xs: "column", md: "row" }}
       sx={{
         justifyContent: "flex-start",
@@ -93,6 +113,7 @@ export const Journey: FC = () => {
         alignSelf: "stretch",
         py: 16,
         gap: { xs: 6, md: 10 },
+        scrollMarginTop: `${HEADER_HEIGHT}px`,
       }}
     >
       <Stack
@@ -128,35 +149,61 @@ export const Journey: FC = () => {
           gap: 3.5,
         }}
       >
-        <Typography
-          variant="overline"
-          sx={{ display: "block", color: "text.disabled" }}
+        <Stack
+          component={motion.div}
+          direction="column"
+          variants={container}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce()}
+          sx={{
+            alignItems: "flex-start",
+            alignSelf: "stretch",
+            gap: 3.5,
+            overflow: "hidden",
+          }}
         >
-          My Journey
-        </Typography>
+          <Typography
+            component={motion.p}
+            variants={revealFromRight}
+            variant="overline"
+            sx={{ display: "block", color: "text.disabled" }}
+          >
+            My Journey
+          </Typography>
 
-        <Typography variant="h2">
-          From Skala Eresos
-          <br />
-          to the gallery wall.
-        </Typography>
+          <Typography
+            component={motion.h2}
+            variants={revealFromRight}
+            variant="h2"
+          >
+            From Skala Eresos
+            <br />
+            to the gallery wall.
+          </Typography>
 
-        <Stack direction="column" sx={{ gap: 2.5, color: "text.secondary" }}>
-          <Typography variant="body1">
-            Born on the island of Lesvos, Greece, my interest in seascape and
-            nature photography began in 1977, when I got my first professional
-            camera.
-          </Typography>
-          <Typography variant="body1">
-            In recent years I have been greatly influenced by minimalism,
-            abstract and impressionist visual art. Nowadays I mostly do not
-            shoot what I see, but what I would like to see.
-          </Typography>
-          <Typography variant="body1">
-            Having returned to live on Lesvos, I am honored to have my work
-            displayed in MYTHOS Gallery and several others, while planning
-            private exhibitions across different cities.
-          </Typography>
+          <Stack
+            component={motion.div}
+            direction="column"
+            variants={revealFromRight}
+            sx={{ gap: 2.5, color: "text.secondary" }}
+          >
+            <Typography variant="body1">
+              Born on the island of Lesvos, Greece, my interest in seascape and
+              nature photography began in 1977, when I got my first professional
+              camera.
+            </Typography>
+            <Typography variant="body1">
+              In recent years I have been greatly influenced by minimalism,
+              abstract and impressionist visual art. Nowadays I mostly do not
+              shoot what I see, but what I would like to see.
+            </Typography>
+            <Typography variant="body1">
+              Having returned to live on Lesvos, I am honored to have my work
+              displayed in MYTHOS Gallery and several others, while planning
+              private exhibitions across different cities.
+            </Typography>
+          </Stack>
         </Stack>
 
         <Stack

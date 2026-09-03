@@ -6,6 +6,7 @@ const basePhotoSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().optional(),
   collectionId: z.string().min(1, "Collection is required"),
+  hero: z.boolean(),
 });
 
 // Additional validation for the image field based on whether it's an edit or a new photo
@@ -31,6 +32,7 @@ export const photoDefaultValues: PhotoFormValues = {
   title: "",
   description: "",
   collectionId: "",
+  hero: false,
 };
 
 /**
@@ -44,4 +46,5 @@ export const mapPhotoToFormValues = (photo: Photo): PhotoFormValues => ({
   title: photo.title,
   description: photo.description,
   collectionId: photo.collectionId,
+  hero: photo.hero,
 });

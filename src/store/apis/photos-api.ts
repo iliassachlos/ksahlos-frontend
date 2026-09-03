@@ -11,6 +11,7 @@ type PhotosResponse = {
 export type PhotoFilters = {
   title?: string;
   collection?: string;
+  hero?: boolean;
 };
 
 // Photo changes affect collection contents and the resolved cover photo, which
@@ -39,6 +40,7 @@ export const photosApi = createApi({
         const params: Record<string, string> = {};
         if (filters?.title) params.title = filters.title;
         if (filters?.collection) params.collection = filters.collection;
+        if (filters?.hero !== undefined) params.hero = String(filters.hero);
 
         return { url: "/photos", params };
       },

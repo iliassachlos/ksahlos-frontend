@@ -71,7 +71,7 @@ export const CollectionView: FC = () => {
         </Stack>
 
         <Masonry
-          columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+          columns={{ xs: 1, sm: 2, md: 3, lg: 5 }}
           spacing={2}
           sx={{ width: "100%", m: 0 }}
         >
@@ -88,6 +88,7 @@ export const CollectionView: FC = () => {
                   key={photo._id}
                   onClick={() => setSelectedPhoto(photo)}
                   sx={{
+                    position: "relative",
                     overflow: "hidden",
                     borderRadius: 1,
                     cursor: "pointer",
@@ -95,6 +96,8 @@ export const CollectionView: FC = () => {
                       transition: "transform 1.1s cubic-bezier(.16,1,.3,1)",
                     },
                     "&:hover img": { transform: "scale(1.04)" },
+                    "&:hover .overlay": { opacity: 1 },
+                    "&:hover .overlay-title": { transform: "translateY(0)" },
                   }}
                 >
                   <img
@@ -102,6 +105,37 @@ export const CollectionView: FC = () => {
                     alt={photo.title}
                     style={{ width: "100%", display: "block" }}
                   />
+
+                  <Stack
+                    className="overlay"
+                    sx={{
+                      position: "absolute",
+                      inset: 0,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      textAlign: "center",
+                      px: 3,
+                      opacity: 0,
+                      transition: "opacity .45s cubic-bezier(.16,1,.3,1)",
+                      bgcolor: "rgba(255, 255, 255, 0.55)",
+                      backdropFilter: "blur(10px)",
+                      WebkitBackdropFilter: "blur(10px)",
+                    }}
+                  >
+                    <Typography
+                      className="overlay-title"
+                      variant="h6"
+                      sx={{
+                        color: "#16171a",
+                        fontWeight: 400,
+                        letterSpacing: "-0.01em",
+                        transform: "translateY(6px)",
+                        transition: "transform .45s cubic-bezier(.16,1,.3,1)",
+                      }}
+                    >
+                      {photo.title}
+                    </Typography>
+                  </Stack>
                 </Box>
               ))}
         </Masonry>
