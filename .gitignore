@@ -28,3 +28,5 @@ dist-ssr
 
 # Other
 CLAUDE.md
+# Production env lives on the server, not in git
+.env.production
