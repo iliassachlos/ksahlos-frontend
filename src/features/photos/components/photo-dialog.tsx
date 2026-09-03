@@ -1,9 +1,7 @@
 import type { Photo } from "@/types/photos";
-import { capitalizeFirstLetter } from "@/utils/utils";
 import CloseIcon from "@mui/icons-material/Close";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { Box, Dialog, IconButton, Stack, Typography } from "@mui/material";
-import { useState, type FC } from "react";
+import { Box, Dialog, IconButton, Stack } from "@mui/material";
+import { type FC } from "react";
 
 type PhotoDialogProps = {
   photo: Photo;
@@ -11,8 +9,6 @@ type PhotoDialogProps = {
 };
 
 export const PhotoDialog: FC<PhotoDialogProps> = ({ photo, onClose }) => {
-  const [showInfo, setShowInfo] = useState(false);
-
   const controlButtonSx = {
     color: "white",
     bgcolor: "rgba(0, 0, 0, 0.45)",
@@ -31,14 +27,6 @@ export const PhotoDialog: FC<PhotoDialogProps> = ({ photo, onClose }) => {
         gap: 2,
       }}
     >
-      <IconButton
-        onClick={() => setShowInfo((prev) => !prev)}
-        aria-label="Toggle info"
-        sx={controlButtonSx}
-      >
-        <InfoOutlinedIcon />
-      </IconButton>
-
       <IconButton onClick={onClose} aria-label="Close" sx={controlButtonSx}>
         <CloseIcon />
       </IconButton>
@@ -77,38 +65,6 @@ export const PhotoDialog: FC<PhotoDialogProps> = ({ photo, onClose }) => {
             borderRadius: 2,
           }}
         />
-
-        {showInfo && (
-          <Stack
-            direction="column"
-            sx={{
-              position: "absolute",
-              inset: 0,
-              justifyContent: "center",
-              alignItems: "center",
-              textAlign: "center",
-              gap: 2,
-              p: { xs: 4, md: 8 },
-              borderRadius: 2,
-              bgcolor: "rgba(255, 255, 255, 0.7)",
-              backdropFilter: "blur(16px)",
-            }}
-          >
-            <Typography variant="h4" sx={{ fontWeight: 500, maxWidth: 640 }}>
-              {capitalizeFirstLetter(photo.title)}
-            </Typography>
-
-            {photo.description && (
-              <Typography
-                variant="h5"
-                color="textSecondary"
-                sx={{ maxWidth: 640 }}
-              >
-                {photo.description}
-              </Typography>
-            )}
-          </Stack>
-        )}
       </Box>
 
       {renderToolbar()}

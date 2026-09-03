@@ -35,7 +35,7 @@ export const Contact: FC = () => {
         Get in touch
       </Typography>
 
-      <Typography variant="h2" sx={{ fontSize: { xs: 44, md: 52 } }}>
+      <Typography variant="h2" sx={{ fontSize: { xs: 44, md: 36 } }}>
         k.sahlos@gmail.com
       </Typography>
 

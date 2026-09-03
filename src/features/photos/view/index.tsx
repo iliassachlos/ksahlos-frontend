@@ -3,21 +3,12 @@ import { useGetPhotosQuery } from "@/store/apis/photos-api";
 import type { Photo } from "@/types/photos";
 import WestIcon from "@mui/icons-material/West";
 import Masonry from "@mui/lab/Masonry";
-import {
-  Box,
-  IconButton,
-  Skeleton,
-  Stack,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, IconButton, Skeleton, Stack, Typography, useTheme } from "@mui/material";
 import { useState, type FC } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { PhotoDialog } from "../components/photo-dialog";
 
-const SKELETON_HEIGHTS = [
-  280, 380, 320, 420, 300, 360, 440, 290, 350, 410, 270, 390,
-];
+const SKELETON_HEIGHTS = [280, 380, 320, 420, 300, 360, 440, 290, 350, 410, 270, 390];
 
 export const PhotosView: FC = () => {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
@@ -80,23 +71,20 @@ export const PhotosView: FC = () => {
         </Stack>
 
         <Masonry
-          columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+          columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
           spacing={2}
           sx={{ width: "100%", m: 0 }}
         >
           {isLoading
             ? SKELETON_HEIGHTS.map((h, i) => (
-                <Skeleton
-                  key={i}
-                  variant="rectangular"
-                  sx={{ height: h, borderRadius: 1 }}
-                />
+                <Skeleton key={i} variant="rectangular" sx={{ height: h, borderRadius: 1 }} />
               ))
             : (photos ?? []).map((photo) => (
                 <Box
                   key={photo._id}
                   onClick={() => setSelectedPhoto(photo)}
                   sx={{
+                    position: "relative",
                     overflow: "hidden",
                     borderRadius: 1,
                     cursor: "pointer",
@@ -104,6 +92,10 @@ export const PhotosView: FC = () => {
                       transition: "transform 1.1s cubic-bezier(.16,1,.3,1)",
                     },
                     "&:hover img": { transform: "scale(1.04)" },
+                    "&:hover .overlay": { opacity: 1 },
+                    "&:hover .overlay-title": {
+                      transform: "translateY(0)",
+                    },
                   }}
                 >
                   <img
@@ -111,16 +103,44 @@ export const PhotosView: FC = () => {
                     alt={photo.title}
                     style={{ width: "100%", display: "block" }}
                   />
+
+                  <Stack
+                    className="overlay"
+                    sx={{
+                      position: "absolute",
+                      inset: 0,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      textAlign: "center",
+                      px: 3,
+                      opacity: 0,
+                      transition: "opacity .45s cubic-bezier(.16,1,.3,1)",
+                      bgcolor: "rgba(255, 255, 255, 0.55)",
+                      backdropFilter: "blur(10px)",
+                      WebkitBackdropFilter: "blur(10px)",
+                    }}
+                  >
+                    <Typography
+                      className="overlay-title"
+                      variant="h6"
+                      sx={{
+                        color: "#16171a",
+                        fontWeight: 400,
+                        letterSpacing: "-0.01em",
+                        transform: "translateY(6px)",
+                        transition: "transform .45s cubic-bezier(.16,1,.3,1)",
+                      }}
+                    >
+                      {photo.title}
+                    </Typography>
+                  </Stack>
                 </Box>
               ))}
         </Masonry>
       </Stack>
 
       {selectedPhoto && (
-        <PhotoDialog
-          photo={selectedPhoto}
-          onClose={() => setSelectedPhoto(null)}
-        />
+        <PhotoDialog photo={selectedPhoto} onClose={() => setSelectedPhoto(null)} />
       )}
     </>
   );

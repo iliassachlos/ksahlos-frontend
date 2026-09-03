@@ -12,6 +12,7 @@ import {
 import { RHFTextField } from "@/components/ui/rhf-inputs/rhf-text-field";
 import { paths } from "@/routes/paths";
 import { useLoginMutation } from "@/store/apis/auth-api";
+import { TOKEN_STORAGE_KEY } from "@/utils/auth";
 
 export const LoginView: FC = () => {
   const [login, { isLoading }] = useLoginMutation();
@@ -41,7 +42,7 @@ export const LoginView: FC = () => {
     }
 
     if (data) {
-      localStorage.setItem("token", data);
+      localStorage.setItem(TOKEN_STORAGE_KEY, data);
       navigate(paths.dashboard);
     }
   };

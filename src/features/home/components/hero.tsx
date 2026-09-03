@@ -107,7 +107,7 @@ export const Hero: FC = () => {
                 fontSize: { xs: 42, sm: 56, md: 91 },
               }}
             >
-              Timeless steps beyond reality
+              Beyond Reality
             </Typography>
           </Stack>
 
@@ -119,7 +119,7 @@ export const Hero: FC = () => {
               maxWidth: "40ch",
             }}
           >
-           Minimal and surreal artworks on cotton paper and canvas
+           Minimalist and surreal artworks on cotton paper and canvas
           </Typography>
 
           <Button

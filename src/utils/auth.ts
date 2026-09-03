@@ -1,3 +1,5 @@
+export const TOKEN_STORAGE_KEY = "ksahlos-jwt";
+
 interface JwtPayload {
   exp?: number;
 }
@@ -33,12 +35,12 @@ export const isTokenValid = (token: string | null | undefined): boolean => {
   if (!token || token === "undefined" || token === "null") return false;
 
   const payload = decodeJwtPayload(token);
-  
+
   if (!payload) return false;
 
-  if (typeof payload.exp === "number" && payload.exp * 1000 <= Date.now()) {
+  if (typeof payload.exp !== "number" || !Number.isFinite(payload.exp)) {
     return false;
   }
 
-  return true;
+  return payload.exp * 1000 > Date.now();
 };
