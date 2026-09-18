@@ -144,7 +144,7 @@ export const Hero: FC = () => {
           <Stack
             direction="row"
             sx={{
-              justifyContent: { xs: "center", md: "flex-start" },
+              justifyContent: { xs: "flex-end", md: "flex-start" },
               alignItems: "flex-end",
               gap: 2,
             }}
